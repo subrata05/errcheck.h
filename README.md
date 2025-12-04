@@ -180,7 +180,6 @@ Perfect for:
 | Same error for many calls | `CHECK_SAME(call)` + `g_current_error_group` | I2C, SPI, UART groups       |
 | Manual return             | `RETURN_ERR(ERR_XXX)`                        | Early exit before checks    |
 | Runtime injection         | `#define ERRCHECK_ENABLE_RUNTIME_INJECTION`  | Debugger‑controlled testing |
-| Optional logging          | `#define ERRCHECK_ENABLE_LOGGING`            | printf/SEGGER_RTT on error  |
 
 ---
 
