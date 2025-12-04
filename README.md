@@ -23,7 +23,7 @@ One line per operation • Zero duplication • Full fault injection • Used in
 
 ---
 
-# Why This Changes Everything
+## Why This Approach Is a Significant Improvement
 
 | Problem in Classic Embedded                             | errcheck.h Solution                               | Real-World Benefit             |
 | ------------------------------------------------------- | ------------------------------------------------- | ------------------------------ |
@@ -35,7 +35,7 @@ One line per operation • Zero duplication • Full fault injection • Used in
 
 ---
 
-## Theory: Fail‑Fast + Single Point of Return
+## Fail-Fast error checking architecture 
 
 This pattern is called **fail-fast error handling** and is the gold standard in safety‑critical firmware (DO‑178C, ISO 26262, IEC 61508).
 
