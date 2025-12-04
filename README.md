@@ -35,7 +35,7 @@ One line per operation • Zero duplication • Full fault injection • Used in
 
 ---
 
-# Theory: Fail‑Fast + Single Point of Return
+## Theory: Fail‑Fast + Single Point of Return
 
 This pattern is called **fail-fast error handling** and is the gold standard in safety‑critical firmware (DO‑178C, ISO 26262, IEC 61508).
 
@@ -55,13 +55,27 @@ Advantages:
 
 ---
 
-# Step‑by‑Step: How to Use It
+## Goal of Fault Injection
+* In real hardware, failures are rare and unpredictable.
+* You can’t just wait for a sensor to actually die during testing.
+* Fault injection lets you force a specific subsystem to fail at exactly the right moment so you can prove:
 
-## 1. Copy the header
+* Upper-layer state machines go to the correct SAFE/FAILURE state
+* Watchdog timer resets the MCU when they should
+* Fallback/degraded modes are actually executed
+* Error logs, telemetry, and black-box recorders contain the correct error flag
+* Automatic recovery mechanisms (retry, switch to backup sensor, etc.) really work
+* System meets safety requirements (e.g. ASIL-B, SIL-3, Class III medical)
+
+---
+
+## Step‑by‑Step: How to Use It
+
+### 1. Copy the header
 
 Just drop `errcheck.h` into your project. No dependencies.
 
-## 2. Define your error type (once per project)
+### 2. Define your error type (once per project)
 
 ```c
 typedef enum {
@@ -78,7 +92,7 @@ typedef enum {
 err_t g_last_error = ERR_NONE;          // Global – automatically updated
 ```
 
-## 3. Basic usage
+### 3. Basic usage
 
 ```c
 err_t device_init(device_t *dev)
@@ -92,7 +106,7 @@ err_t device_init(device_t *dev)
 }
 ```
 
-## 4. When many calls share the same error code
+### 4. When many calls share the same error code
 
 ```c
 err_t g_current_error_group = ERR_I2C;
@@ -107,7 +121,7 @@ err_t i2c_init(void)
 }
 ```
 
-## 5. Compile‑time Fault Injection (CI & Automated Testing)
+### 5. Compile‑time Fault Injection (CI & Automated Testing)
 
 You can force any subsystem to fail at compile time — perfect for proving every error path is handled.
 
@@ -130,7 +144,7 @@ err_t init(void)
 
 Now your CI builds the same code 8 times with different `-D INJECT_...` flags → **100% error‑path coverage**, zero runtime cost.
 
-## 6. Runtime Fault Injection (Debugger / Integration Tests)
+### 6. Runtime Fault Injection (Debugger / Integration Tests)
 
 Enable at compile time (usually only in debug builds):
 
@@ -158,7 +172,7 @@ Perfect for:
 
 ---
 
-# Full Feature List
+## Full Feature List
 
 | Feature                   | Macro / Define                               | Use Case                    |
 | ------------------------- | -------------------------------------------- | --------------------------- |
@@ -170,7 +184,7 @@ Perfect for:
 
 ---
 
-# Examples (ready to compile)
+## Examples (ready to compile)
 
 * `examples/basic_usage.c` – Classic init sequence
 * `examples/multiple_errors.c` – Mixed error codes + CHECK_SAME
@@ -179,7 +193,7 @@ Perfect for:
 
 ---
 
-# Installation
+## Installation
 
 ```bash
 # Just copy the file – that's it
